@@ -10,3 +10,19 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage
+
+def release(update: Update, context: CallbackContext):
+    CHAT_ID=message.chat_id
+    USER_ID = f"{message.from_user.id}"
+    FIRST_NAME = f"{message.from_user.first_name}"
+    if message.from_user.username:
+        USER_TAG = f"@{message.from_user.username}"
+    else:
+        USER_TAG = f"none"
+
+
+
+release_handler = CommandHandler(BotCommands.MirrorCommand, release,
+                                filters=CustomFilters.authorized_chat | CustomFilters.sudo_user | CustomFilters.authorized_user, run_async=True)
+
+dispatcher.add_handler(release_handler)

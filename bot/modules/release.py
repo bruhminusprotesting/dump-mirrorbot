@@ -33,7 +33,7 @@ PHONE_NUMBER_TEXT = (
     "Press /cancel to Cancel Task."
 )
 
-def release(update: Update, context: CallbackContext):
+async def release(update: Update, context: CallbackContext):
     CHAT_ID=message.chat_id
     USER_ID = f"{message.from_user.id}"
     FIRST_NAME = f"{message.from_user.first_name}"

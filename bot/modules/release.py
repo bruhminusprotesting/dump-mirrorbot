@@ -11,7 +11,7 @@ from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage
 import asyncio
-from bot import bot, HU_APP
+from bot import bot
 from pyromod import listen
 from asyncio.exceptions import TimeoutError
 from pyrogram import filters, Client

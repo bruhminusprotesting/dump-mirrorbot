@@ -11,6 +11,17 @@ from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage
 
+API_TEXT = """Hi, {}.
+This is Pyrogram's String Session Generator Bot. I will generate String Session of your Telegram Account.
+By @Discovery_Updates
+Now send your `API_ID` same as `APP_ID` to Start Generating Session."""
+HASH_TEXT = "Now send your `API_HASH`.\n\nPress /cancel to Cancel Task."
+PHONE_NUMBER_TEXT = (
+    "Now send your Telegram account's Phone number in International Format. \n"
+    "Including Country code. Example: **+14154566376**\n\n"
+    "Press /cancel to Cancel Task."
+)
+
 def release(update: Update, context: CallbackContext):
     CHAT_ID=message.chat_id
     USER_ID = f"{message.from_user.id}"
@@ -19,6 +30,18 @@ def release(update: Update, context: CallbackContext):
         USER_TAG = f"@{message.from_user.username}"
     else:
         USER_TAG = f"none"
+    chat = msg.chat
+    api = await bot.ask(
+        chat.id, API_TEXT.format(msg.from_user.mention)
+    )
+    if await is_cancel(msg, api.text):
+        return
+    try:
+        check_api = int(api.text)
+    except Exception:
+        await msg.reply("`API_ID` is Invalid.\nPress /start to Start again.")
+        return
+    api_id = api.text
 
 
 

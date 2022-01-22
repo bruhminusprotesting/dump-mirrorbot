@@ -135,10 +135,10 @@ def cancel(update: Update, context: CallbackContext) -> int:
 def main() -> None:
     """Run the bot."""
     # Create the Updater and pass it your bot's token.
-    updater = Updater(BOT_TOKEN)
+    #updater = Updater(BOT_TOKEN)
 
     # Get the dispatcher to register handlers
-    dispatcher = updater.dispatcher
+    #dispatcher = updater.dispatcher
 
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
     conv_handler = ConversationHandler(

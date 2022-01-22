@@ -153,6 +153,7 @@ def main() -> None:
             BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
         },
         fallbacks=[CommandHandler('cancel', cancel)],
+        filters=CustomFilters.owner_filter | CustomFilters.authorized_user | CustomFilters.sudo_user, run_async=True
     )
 
     dispatcher.add_handler(conv_handler)

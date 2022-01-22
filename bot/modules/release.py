@@ -11,7 +11,6 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage
-
 AUTHORIZED_CHATS.add(OWNER_ID)
 import subprocess
 import string

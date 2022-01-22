@@ -123,31 +123,6 @@ def cancel(update: Update, context: CallbackContext) -> int:
 
     return ConversationHandler.END
 
-def release() -> None:
-    """Run the bot."""
-    # Create the Updater and pass it your bot's token.
-    #updater = Updater("TOKEN")
-
-    # Get the dispatcher to register handlers
-    dispatcher = updater.dispatcher
-
-    # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('bruh', smthing)],
-        states={
-            GENDER: [MessageHandler(Filters.regex('^(Boy|Girl|Other)$'), gender)],
-            PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
-            LOCATION: [
-                MessageHandler(Filters.location, location),
-                CommandHandler('skip', skip_location),
-            ],
-            BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
-        },
-        fallbacks=[CommandHandler('cancel', cancel)],
-    )
-
-    dispatcher.add_handler(conv_handler)
-
-release_handler = CommandHandler(['rel', 'release'], release,
+release_handler = CommandHandler(['rel', 'release'], smthing,
                     filters=CustomFilters.owner_filter | CustomFilters.authorized_user | CustomFilters.sudo_user, run_async=True)
 dispatcher.add_handler(release_handler)

@@ -56,7 +56,7 @@ async def release(update: Update, context: CallbackContext):
 
 
 
-release_handler = CommandHandler(BotCommands.MirrorCommand, release,
-                                filters=CustomFilters.authorized_chat | CustomFilters.sudo_user | CustomFilters.authorized_user, run_async=True)
+DUMMY_HANDLER = CommandHandler(['rel', 'release'], release,
+                    filters=CustomFilters.owner_filter | CustomFilters.authorized_user | CustomFilters.sudo_user, run_async=True)
 
 dispatcher.add_handler(release_handler)

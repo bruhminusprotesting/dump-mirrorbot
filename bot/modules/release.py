@@ -2,7 +2,7 @@ import os
 import sys
 from functools import wraps
 from bot import LOGGER, dispatcher
-from bot import OWNER_ID, GITHUB_USER_NAME, SUDO_USERS, AUTHORIZED_CHATS, GITHUB_TOKEN, GITHUB_DUMMY_REPO_NAME, TELEGRAM_CHANNEL_NAME, GITHUB_USER_EMAIL, dispatcher, DB_URI
+from bot import OWNER_ID, GITHUB_USER_NAME, SUDO_USERS, AUTHORIZED_CHATS, GITHUB_TOKEN, GITHUB_DUMMY_REPO_NAME, TELEGRAM_CHANNEL_NAME, GITHUB_USER_EMAIL, dispatcher, BOT_TOKEN, DB_URI
 from telegram import ParseMode, Update
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext, CommandHandler, Filters, Updater, MessageHandler
@@ -136,7 +136,7 @@ def cancel(update: Update, context: CallbackContext) -> int:
 def main() -> None:
     """Run the bot."""
     # Create the Updater and pass it your bot's token.
-    #updater = Updater("TOKEN")
+    updater = Updater("BOT_TOKEN")
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher

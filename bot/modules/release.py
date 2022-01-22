@@ -40,6 +40,16 @@ def smthing(update: Update, context: CallbackContext) -> int:
     )
 
     return GENDER
+    """Stores the selected gender and asks for a photo."""
+    user = update.message.from_user
+    logger.info("Gender of %s: %s", user.first_name, update.message.text)
+    update.message.reply_text(
+        'I see! Please send me a photo of yourself, '
+        'so I know what you look like, or send /skip if you don\'t want to.',
+        reply_markup=ReplyKeyboardRemove(),
+    )
+
+    return PHOTO
 
 
 def gender(update: Update, context: CallbackContext) -> int:

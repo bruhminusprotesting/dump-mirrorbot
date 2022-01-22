@@ -88,40 +88,112 @@ bashcmd=bashfile
 for arg in sys.argv[1:]:
   bashcmd += ' '+arg
 
-def release(update: Update, context: CallbackContext):
-    message = update.effective_message
-    cmd = message.text.split(' ', 1)
-    CHAT_ID=message.chat_id
-    print(CHAT_ID)
-    if len(cmd) == 1:
-        message.reply_text('Release Testing')
+@bot.on_message(filters.private & filters.command("release"))
+async def genStr(_, msg: Message):
+    chat = msg.chat
+    api = await bot.ask(
+        chat.id, API_TEXT.format(msg.from_user.mention)
+    )
+    if await is_cancel(msg, api.text):
         return
-    cmd = cmd[1]
-    process = subprocess.Popen(
-        bashcmd + ' ' + '"' + GITHUB_TOKEN + ' ' + GITHUB_USER_NAME + ' ' + GITHUB_DUMMY_REPO_NAME + ' ' + GITHUB_USER_EMAIL + ' ' + TELEGRAM_CHANNEL_NAME + ' ' + str(CHAT_ID) + ' ' + cmd + '"', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    stdout, stderr = process.communicate()
-    reply = ''
-    stderr = stderr.decode()
-    stdout = stdout.decode()
-    if stdout:
-        reply += f"*Generating Dummy Device-Tree, It will be availaible on \n\n{TELEGRAM_CHANNEL_NAME}*\n\n '{stdout}'\n"
-        LOGGER.info(f"Shell - {bashcmd} {GITHUB_TOKEN} {GITHUB_USER_NAME} {GITHUB_DUMMY_REPO_NAME} {GITHUB_USER_EMAIL} {TELEGRAM_CHANNEL_NAME} {str(CHAT_ID)} {cmd} - {stdout}")
-    if stderr:
-        reply += f"*Stderr*\n`{stderr}`\n"
-        LOGGER.error(f"Shell - {bashcmd} {GITHUB_TOKEN} {GITHUB_USER_NAME} {GITHUB_DUMMY_REPO_NAME} {GITHUB_USER_EMAIL} {TELEGRAM_CHANNEL_NAME} {str(CHAT_ID)} {cmd} - {stderr}")
-    if len(reply) > 3000:
-        with open('shell_output.txt', 'w') as file:
-            file.write(reply)
-        with open('shell_output.txt', 'rb') as doc:
-            context.bot.send_document(
-                document=doc,
-                filename=doc.name,
-                reply_to_message_id=message.message_id,
-                chat_id=message.chat_id)
-    else:
-        message.reply_text(reply, parse_mode=ParseMode.MARKDOWN)
+    try:
+        check_api = int(api.text)
+    except Exception:
+        await msg.reply("`API_ID` is Invalid.\nPress /start to Start again.")
+        return
+    api_id = api.text
+    hash = await bot.ask(chat.id, HASH_TEXT)
+    if await is_cancel(msg, hash.text):
+        return
+    if not len(hash.text) >= 30:
+        await msg.reply("`API_HASH` is Invalid.\nPress /start to Start again.")
+        return
+    api_hash = hash.text
+    while True:
+        number = await bot.ask(chat.id, PHONE_NUMBER_TEXT)
+        if not number.text:
+            continue
+        if await is_cancel(msg, number.text):
+            return
+        phone = number.text
+        confirm = await bot.ask(chat.id, f'`Is "{phone}" correct? (y/n):` \n\nSend: `y` (If Yes)\nSend: `n` (If No)')
+        if await is_cancel(msg, confirm.text):
+            return
+        if "y" in confirm.text:
+            break
+    try:
+        client = Client("my_account", api_id=api_id, api_hash=api_hash)
+    except Exception as e:
+        await bot.send_message(chat.id ,f"**ERROR:** `{str(e)}`\nPress /start to Start again.")
+        return
+    try:
+        await client.connect()
+    except ConnectionError:
+        await client.disconnect()
+        await client.connect()
+    try:
+        code = await client.send_code(phone)
+        await asyncio.sleep(1)
+    except FloodWait as e:
+        await msg.reply(f"You have Floodwait of {e.x} Seconds")
+        return
+    except ApiIdInvalid:
+        await msg.reply("API ID and API Hash are Invalid.\n\nPress /start to Start again.")
+        return
+    except PhoneNumberInvalid:
+        await msg.reply("Your Phone Number is Invalid.\n\nPress /start to Start again.")
+        return
+    try:
+        otp = await bot.ask(
+            chat.id, ("An OTP is sent to your phone number, "
+                      "Please enter OTP in `1 2 3 4 5` format. __(Space between each numbers!)__ \n\n"
+                      "If Bot not sending OTP then try /restart and Start Task again with /start command to Bot.\n"
+                      "Press /cancel to Cancel."), timeout=300)
 
-
-release_handler = CommandHandler(['rel', 'release'], release,
-                    filters=CustomFilters.owner_filter | CustomFilters.authorized_user | CustomFilters.sudo_user, run_async=True)
-dispatcher.add_handler(release_handler)
+    except TimeoutError:
+        await msg.reply("Time limit reached of 5 min.\nPress /start to Start again.")
+        return
+    if await is_cancel(msg, otp.text):
+        return
+    otp_code = otp.text
+    try:
+        await client.sign_in(phone, code.phone_code_hash, phone_code=' '.join(str(otp_code)))
+    except PhoneCodeInvalid:
+        await msg.reply("Invalid Code.\n\nPress /start to Start again.")
+        return
+    except PhoneCodeExpired:
+        await msg.reply("Code is Expired.\n\nPress /start to Start again.")
+        return
+    except SessionPasswordNeeded:
+        try:
+            two_step_code = await bot.ask(
+                chat.id, 
+                "Your account have Two-Step Verification.\nPlease enter your Password.\n\nPress /cancel to Cancel.",
+                timeout=300
+            )
+        except TimeoutError:
+            await msg.reply("`Time limit reached of 5 min.\n\nPress /start to Start again.`")
+            return
+        if await is_cancel(msg, two_step_code.text):
+            return
+        new_code = two_step_code.text
+        try:
+            await client.check_password(new_code)
+        except Exception as e:
+            await msg.reply(f"**ERROR:** `{str(e)}`")
+            return
+    except Exception as e:
+        await bot.send_message(chat.id ,f"**ERROR:** `{str(e)}`")
+        return
+    try:
+        session_string = await client.export_session_string()
+        await client.send_message("me", f"#PYROGRAM #STRING_SESSION\n\n```{session_string}``` \n\nBy [@StringSessionGen_Bot](tg://openmessage?user_id=1472531255) \nA Bot By @Discovery_Updates")
+        await client.disconnect()
+        text = "String Session is Successfully Generated.\nClick on Below Button."
+        reply_markup = InlineKeyboardMarkup(
+            [[InlineKeyboardButton(text="Show String Session", url=f"tg://openmessage?user_id={chat.id}")]]
+        )
+        await bot.send_message(chat.id, text, reply_markup=reply_markup)
+    except Exception as e:
+        await bot.send_message(chat.id ,f"**ERROR:** `{str(e)}`")
+        return

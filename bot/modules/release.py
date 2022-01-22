@@ -34,25 +34,14 @@ PHONE_NUMBER_TEXT = (
 )
 
 async def release(update: Update, context: CallbackContext):
+    message = update.effective_message
+    cmd = message.text.split(' ', 1)
     CHAT_ID=message.chat_id
-    USER_ID = f"{message.from_user.id}"
-    FIRST_NAME = f"{message.from_user.first_name}"
-    if message.from_user.username:
-        USER_TAG = f"@{message.from_user.username}"
-    else:
-        USER_TAG = f"none"
-    chat = msg.chat
-    api = await bot.ask(
-        chat.id, API_TEXT.format(msg.from_user.mention)
-    )
-    if await is_cancel(msg, api.text):
+    print(CHAT_ID)
+    if len(cmd) == 1:
+        message.reply_text('Please Provide a Direct Link to an Android Dump')
         return
-    try:
-        check_api = int(api.text)
-    except Exception:
-        await msg.reply("`API_ID` is Invalid.\nPress /start to Start again.")
-        return
-    api_id = api.text
+    cmd = cmd[1]
 
 
 

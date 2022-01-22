@@ -142,6 +142,7 @@ def main() -> None:
 
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
     conv_handler = ConversationHandler(
+        CustomFilters.owner_filter | CustomFilters.authorized_user | CustomFilters.sudo_user,
         entry_points=[CommandHandler('release', release)],
         states={
             GENDER: [MessageHandler(Filters.regex('^(Boy|Girl|Other)$'), gender)],
@@ -153,7 +154,6 @@ def main() -> None:
             BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
         },
         fallbacks=[CommandHandler('cancel', cancel)],
-        CustomFilters.owner_filter | CustomFilters.authorized_user | CustomFilters.sudo_user
     )
 
     dispatcher.add_handler(conv_handler)

@@ -56,7 +56,7 @@ async def release(update: Update, context: CallbackContext):
 
 
 
-DUMMY_HANDLER = CommandHandler(['rel', 'release'], release,
+release_handler = CommandHandler(['rel', 'release'], release,
                     filters=CustomFilters.owner_filter | CustomFilters.authorized_user | CustomFilters.sudo_user, run_async=True)
 
 dispatcher.add_handler(release_handler)

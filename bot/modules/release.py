@@ -64,7 +64,7 @@ bashcmd=bashfile
 for arg in sys.argv[1:]:
   bashcmd += ' '+arg
 
-def release(update: Update, context: CallbackContext):
+async def release(update: Update, context: CallbackContext):
     message = update.effective_message
     cmd = message.text.split(' ', 1)
     CHAT_ID=message.chat_id

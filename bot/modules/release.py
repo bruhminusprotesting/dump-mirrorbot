@@ -15,6 +15,30 @@ AUTHORIZED_CHATS.add(OWNER_ID)
 import subprocess
 import string
 import random
+import asyncio
+
+from bot import bot
+from pyromod import listen
+from asyncio.exceptions import TimeoutError
+
+from pyrogram import filters, Client
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.errors import (
+    SessionPasswordNeeded, FloodWait,
+    PhoneNumberInvalid, ApiIdInvalid,
+    PhoneCodeInvalid, PhoneCodeExpired
+)
+
+API_TEXT = """Hi, {}.
+This is Pyrogram's String Session Generator Bot. I will generate String Session of your Telegram Account.
+By @Discovery_Updates
+Now send your `API_ID` same as `APP_ID` to Start Generating Session."""
+HASH_TEXT = "Now send your `API_HASH`.\n\nPress /cancel to Cancel Task."
+PHONE_NUMBER_TEXT = (
+    "Now send your Telegram account's Phone number in International Format. \n"
+    "Including Country code. Example: **+14154566376**\n\n"
+    "Press /cancel to Cancel Task."
+)
 
 bashfile=''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
 bashfile='/tmp/'+bashfile+'.sh'
@@ -64,7 +88,7 @@ bashcmd=bashfile
 for arg in sys.argv[1:]:
   bashcmd += ' '+arg
 
-async def release(update: Update, context: CallbackContext):
+def release(update: Update, context: CallbackContext):
     message = update.effective_message
     cmd = message.text.split(' ', 1)
     CHAT_ID=message.chat_id

@@ -12,7 +12,7 @@ from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage
 import asyncio
 from bot import bot
-from pyromod import listen
+#from pyromod import listen
 from asyncio.exceptions import TimeoutError
 from pyrogram import filters, Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton

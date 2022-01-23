@@ -49,7 +49,7 @@ def release(update: Update, context: CallbackContext) -> int:
 def gender(update: Update, context: CallbackContext) -> int:
     """Stores the selected gender and asks for a photo."""
     global DEVICE_CODENAME
-    DEVICE_CODENAME = update.message.from_user
+    DEVICE_CODENAME = update.message.text
     print("Hello, this is codename 1 ")
     print(DEVICE_CODENAME)
     print("Hello bro")

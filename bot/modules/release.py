@@ -29,13 +29,18 @@ GENDER, PHOTO, LOCATION, BIO = range(4)
 def release(update: Update, context: CallbackContext) -> int:
     """Starts the conversation and asks the user about their gender."""
     user = update.message.from_user
-    if user.id in AUTHORIZED_CHATS:
-        print(user.id)
-    else:
-        update.message.reply_text(
+    #if user.id in AUTHORIZED_CHATS:
+    #    print(user.id)
+    #else:
+    #    update.message.reply_text(
+    #            "This is a temp restricted command."
+    #            " You do not have permissions to run this.")
+    #    stop()
+    if not user.id in AUTHORIZED_CHATS: or user.id in SUDO_USERS:
+            update.message.reply_text(
                 "This is a temp restricted command."
                 " You do not have permissions to run this.")
-        stop()
+            stop()
         
     reply_keyboard = [['Boy', 'Girl', 'Other']]
 

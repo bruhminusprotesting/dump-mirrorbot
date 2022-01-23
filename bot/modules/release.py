@@ -12,7 +12,7 @@ from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage
 AUTHORIZED_CHATS.add(OWNER_ID)
-AUTHORIZED_CHATS.add(SUDO_USERS)
+#AUTHORIZED_CHATS.add(SUDO_USERS)
 import subprocess
 import string
 import random

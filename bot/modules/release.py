@@ -12,6 +12,7 @@ from bot.helper.ext_utils.db_handler import DbManger
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import sendMessage
 AUTHORIZED_CHATS.add(OWNER_ID)
+AUTHORIZED_CHATS.add(SUDO_USERS)
 import subprocess
 import string
 import random
@@ -134,9 +135,15 @@ def cancel(update: Update, context: CallbackContext) -> int:
 
 def main() -> None:
     """Run the bot."""
+    
     # Create the Updater and pass it your bot's token.
     #updater = Updater(BOT_TOKEN)
-
+    if update.effective_user.user_id in AUTHORIZED_CHATS:
+        true
+    else:
+        update.effective_message.reply_text(
+                "This is a temp restricted command."
+                " You do not have permissions to run this.")
     # Get the dispatcher to register handlers
     #dispatcher = updater.dispatcher
 

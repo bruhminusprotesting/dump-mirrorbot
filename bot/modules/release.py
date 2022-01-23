@@ -143,7 +143,7 @@ def main() -> None:
     
     # Get the dispatcher to register handlers
     #dispatcher = updater.dispatcher
-    
+    user = update.message.from_user
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
     if user.id in AUTHORIZED_CHATS:
         conv_handler = ConversationHandler(

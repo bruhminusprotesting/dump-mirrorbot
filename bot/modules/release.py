@@ -45,29 +45,129 @@ def release(update: Update, context: CallbackContext) -> int:
     reply_keyboard = [['Boy', 'Girl', 'Other']]
 
     update.message.reply_text(
-        'Tell Me your gender bro.'
+        "Enter Your Device Codename."
+        "Use /stop to exit."
     )
+    return DEVICE_NAME
 
-    return GENDER
 
-
-def gender(update: Update, context: CallbackContext) -> int:
-    """Stores the selected gender and asks for a photo."""
+def device_name(update: Update, context: CallbackContext) -> int:
+    """Stores the device_codename and asks for device_name."""
     global DEVICE_CODENAME
     DEVICE_CODENAME = update.message.text
-    print("Hello, this is codename 1 ")
-    print(DEVICE_CODENAME)
-    print("Hello bro")
     user = update.message.from_user
-    logger.info("Gender of %s: %s", user.first_name, update.message.text)
     update.message.reply_text(
-        'I see! Please send me a photo of yourself, '
-        'so I know what you look like, or send /skip if you don\'t want to.',
+        'Send Your Device Name(example: Realme C1):',
         reply_markup=ReplyKeyboardRemove(),
     )
+    return OTA_STATUS
 
-    return PHOTO
+def ota_status(update: Update, context: CallbackContext) -> int:
+    """Stores Device Name And Asks For OTA Status."""
+    global DEVICE_NAME
+    DEVICE_NAME = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Do You Want To Send an OTA Update To Users For This Build? (y/n).')
+    return DOWNLOAD_LINK
 
+def download_link(update: Update, context: CallbackContext) -> int:
+    """Stores OTA Info and asks for download link."""
+    global DOWNLOAD_LINK
+    DOWNLOAD_LINK = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('What\'s the android version?(integer values only).')
+    return ANDROID_VERSION
+
+def android_version(update: Update, context: CallbackContext) -> int:
+    global ANDROID_VERSION
+    ANDROID_VERSION = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Are there any bugs you\'d like to inform your users about?( /skip to skip).')
+    return BUGS
+
+def bugs(update: Update, context: CallbackContext) -> int:
+    global BUGS
+    BUGS = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Send the flash steps needed in the form of a telegra.ph link.')
+    return TELEGRAPH_FLASH_STEPS_LINK
+
+def telegraph_flash_steps_link(update: Update, context: CallbackContext) -> int:
+    global TELEGRAPH_FLASH_STEPS_LINK
+    TELEGRAPH_FLASH_STEPS_LINK = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Send the Preferred gapps link ( press /skip only if your build ships with gapps).')
+    return ARE_THERE_GAPPS
+
+def are_there_gapps(update: Update, context: CallbackContext) -> int:
+    global ARE_THERE_GAPPS
+    ARE_THERE_GAPPS = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
+    return RECOVERY_DOWNLOAD_LINK
+
+def recovery_download_link(update: Update, context: CallbackContext) -> int:
+    global RECOVERY_DOWNLOAD_LINK
+    RECOVERY_DOWNLOAD_LINK = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Send the firmware link if its needed ( /skip to skip).')
+    return FIRMWARE_DOWNLOAD_LINK
+
+def firmware_download_link(update: Update, context: CallbackContext) -> int:
+    global FIRMWARE_DOWNLOAD_LINK
+    FIRMWARE_DOWNLOAD_LINK = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Enter Changelog For Your Build.')
+    return BUILD_CHANGELOG
+
+def build_changelog(update: Update, context: CallbackContext) -> int:
+    global BUILD_CHANGELOG
+    BUILD_CHANGELOG = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Are there any Notes you\'d like to leave for users? (Enter /skip to skip notes).')
+    return USER_NOTES
+
+def user_notes(update: Update, context: CallbackContext) -> int:
+    global USER_NOTES
+    USER_NOTES = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Are The Above Values Correct? If Yes, Type "Y". Else Click /stop to start over again.')
+    return ARE_VALUES_CORRECT
+
+def are_values_correct(update: Update, context: CallbackContext) -> int:
+    global ARE_VALUES_CORRECT
+    ARE_VALUES_CORRECT = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Processing Your Build.')
+    process_build()
+
+def skip_bugs(update: Update, context: CallbackContext) -> int:
+    global BUGS
+    BUGS = 'skipped'
+    user = update.message.from_user
+    update.message.reply_text('Skipping bugs. Now Send the flash steps needed in the form of a telegra.ph link.')
+    return TELEGRAPH_FLASH_STEPS_LINK
+
+def skip_are_there_gapps(update: Update, context: CallbackContext) -> int:
+    global ARE_THERE_GAPPS
+    ARE_THERE_GAPPS = 'skipped'
+    user = update.message.from_user
+    update.message.reply_text('Skipped GApps. Now Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
+    return RECOVERY_DOWNLOAD_LINK
+
+def skip_firmware_download_link(update: Update, context: CallbackContext) -> int:
+    global FIRMWARE_DOWNLOAD_LINK
+    FIRMWARE_DOWNLOAD_LINK = 'skipped'
+    user = update.message.from_user
+    update.message.reply_text('Skipped Firmware Download Link. Now Enter Changelog For Your Build.')
+    return BUILD_CHANGELOG
+
+def skip_user_notes(update: Update, context: CallbackContext) -> int:
+    global USER_NOTES
+    USER_NOTES = 'skipped'
+    user = update.message.from_user
+    update.message.reply_text('Are The Above Values Correct? If Yes, Type "Y". Else Click /stop to start over again.')
+    return ARE_VALUES_CORRECT
 
 def photo(update: Update, context: CallbackContext) -> int:
     """Stores the photo and asks for a location."""
@@ -153,7 +253,18 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('release', release)],
         states={
-            GENDER: [MessageHandler(Filters.text, gender)],
+            DEVICE_NAME: [MessageHandler(Filters.text, device_name)],
+            OTA_STATUS: [MessageHandler(Filters.text, ota_status)],
+            DOWNLOAD_LINK: [MessageHandler(Filters.text, download_link)],
+            ANDROID_VERSION: [MessageHandler(Filters.text, android_version)],
+            BUGS: [MessageHandler(Filters.text, bugs), CommandHandler('skip', skip_bugs)],
+            TELEGRAPH_FLASH_STEPS_LINK: [MessageHandler(Filters.text, telegraph_flash_steps_link)],
+            ARE_THERE_GAPPS: [MessageHandler(Filters.text, are_there_gapps), CommandHandler('skip', skip_are_there_gapps)],
+            RECOVERY_DOWNLOAD_LINK: [MessageHandler(Filters.text, recovery_download_link)],
+            FIRMWARE_DOWNLOAD_LINK: [MessageHandler(Filters.text, firmware_download_link), CommandHandler('skip', skip_firmware_download_link)],
+            BUILD_CHANGELOG: [MessageHandler(Filters.text, build_changelog)],
+            USER_NOTES: [MessageHandler(Filters.text, user_notes), CommandHandler('skip', skip_user_notes)],
+            ARE_VALUES_CORRECT: [MessageHandler(Filters.text, DEVICE_NAME)],
             PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
             LOCATION: [
                 MessageHandler(Filters.location, location),

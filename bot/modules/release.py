@@ -35,13 +35,13 @@ def release(update: Update, context: CallbackContext) -> int:
         update.message.reply_text(
                 "This is a temp restricted command."
                 " You do not have permissions to run this.")
-        cancel()
+        stop()
         
     reply_keyboard = [['Boy', 'Girl', 'Other']]
 
     update.message.reply_text(
         'Hi! My name is Professor Bot. I will hold a conversation with you. '
-        'Send /cancel to stop talking to me.\n\n'
+        'Send /stop to stop talking to me.\n\n'
         'Are you a boy or a girl?',
         reply_markup=ReplyKeyboardMarkup(
             reply_keyboard, one_time_keyboard=True, input_field_placeholder='Boy or Girl?'
@@ -49,16 +49,6 @@ def release(update: Update, context: CallbackContext) -> int:
     )
 
     return GENDER
-    """Stores the selected gender and asks for a photo."""
-    user = update.message.from_user
-    logger.info("Gender of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text(
-        'I see! Please send me a photo of yourself, '
-        'so I know what you look like, or send /skip if you don\'t want to.',
-        reply_markup=ReplyKeyboardRemove(),
-    )
-
-    return PHOTO
 
 
 def gender(update: Update, context: CallbackContext) -> int:
@@ -132,10 +122,10 @@ def bio(update: Update, context: CallbackContext) -> int:
     return ConversationHandler.END
 
 
-def cancel(update: Update, context: CallbackContext) -> int:
-    """Cancels and ends the conversation."""
+def stop(update: Update, context: CallbackContext) -> int:
+    """Stops and ends the conversation."""
     user = update.message.from_user
-    logger.info("User %s canceled the conversation.", user.first_name)
+    logger.info("User %s stopped the conversation.", user.first_name)
     update.message.reply_text(
         'Bye! I hope we can talk again some day.', reply_markup=ReplyKeyboardRemove()
     )
@@ -163,7 +153,7 @@ def main() -> None:
             ],
             BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
         },
-        fallbacks=[CommandHandler('cancel', cancel)],
+        fallbacks=[CommandHandler('stop', stop)],
     )
 
     dispatcher.add_handler(conv_handler)

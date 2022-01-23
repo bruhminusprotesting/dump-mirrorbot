@@ -40,12 +40,7 @@ def release(update: Update, context: CallbackContext) -> int:
     reply_keyboard = [['Boy', 'Girl', 'Other']]
 
     update.message.reply_text(
-        'Hi! My name is Professor Bot. I will hold a conversation with you. '
-        'Send /stop to stop talking to me.\n\n'
-        'Are you a boy or a girl?',
-        reply_markup=ReplyKeyboardMarkup(
-            reply_keyboard, one_time_keyboard=True, input_field_placeholder='Boy or Girl?'
-        ),
+        'Tell Me your gender bro.'
     )
 
     return GENDER

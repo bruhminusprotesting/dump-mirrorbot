@@ -28,6 +28,13 @@ GENDER, PHOTO, LOCATION, BIO = range(4)
 
 def release(update: Update, context: CallbackContext) -> int:
     """Starts the conversation and asks the user about their gender."""
+    if update.effective_user.user_id in AUTHORIZED_CHATS:
+        true
+    else:
+        update.effective_message.reply_text(
+                "This is a temp restricted command."
+                " You do not have permissions to run this.")
+        
     reply_keyboard = [['Boy', 'Girl', 'Other']]
 
     update.message.reply_text(
@@ -133,17 +140,12 @@ def cancel(update: Update, context: CallbackContext) -> int:
 
     return ConversationHandler.END
 
-def main(update: Update) -> None:
+def main() -> None:
     """Run the bot."""
     
     # Create the Updater and pass it your bot's token.
     #updater = Updater(BOT_TOKEN)
-    if update.effective_user.user_id in AUTHORIZED_CHATS:
-        true
-    else:
-        update.effective_message.reply_text(
-                "This is a temp restricted command."
-                " You do not have permissions to run this.")
+    
     # Get the dispatcher to register handlers
     #dispatcher = updater.dispatcher
 

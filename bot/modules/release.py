@@ -35,7 +35,7 @@ def release(update: Update, context: CallbackContext) -> int:
         update.message.reply_text(
                 "This is a temp restricted command."
                 " You do not have permissions to run this.")
-        exit()
+        cancel()
         
     reply_keyboard = [['Boy', 'Girl', 'Other']]
 

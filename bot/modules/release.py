@@ -28,7 +28,7 @@ GENDER, PHOTO, LOCATION, BIO = range(4)
 
 def release(update: Update, context: CallbackContext) -> int:
     """Starts the conversation and asks the user about their gender."""
-    if update.effective_user.user_id in AUTHORIZED_CHATS:
+    if user.id in AUTHORIZED_CHATS:
         true
     else:
         update.effective_message.reply_text(

@@ -150,21 +150,26 @@ def main() -> None:
     
     # Get the dispatcher to register handlers
     #dispatcher = updater.dispatcher
-
+    
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('release', release)],
-        states={
-            GENDER: [MessageHandler(Filters.regex('^(Boy|Girl|Other)$'), gender)],
-            PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
-            LOCATION: [
-                MessageHandler(Filters.location, location),
-                CommandHandler('skip', skip_location),
-            ],
-            BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
-        },
-        fallbacks=[CommandHandler('cancel', cancel)],
-    )
+    if user.id in AUTHORIZED_CHATS:
+        conv_handler = ConversationHandler(
+            entry_points=[CommandHandler('release', release)],
+            states={
+                GENDER: [MessageHandler(Filters.regex('^(Boy|Girl|Other)$'), gender)],
+                PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
+                LOCATION: [
+                    MessageHandler(Filters.location, location),
+                    CommandHandler('skip', skip_location),
+                ],
+                BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
+            },
+            fallbacks=[CommandHandler('cancel', cancel)],
+        )
+    else:
+        update.message.reply_text(
+                "This is a temp restricted command."
+                " You do not have permissions to run this.")
 
     dispatcher.add_handler(conv_handler)
 

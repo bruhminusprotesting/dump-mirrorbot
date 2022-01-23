@@ -133,7 +133,7 @@ def cancel(update: Update, context: CallbackContext) -> int:
 
     return ConversationHandler.END
 
-def main() -> None:
+def main(update: Update) -> None:
     """Run the bot."""
     
     # Create the Updater and pass it your bot's token.

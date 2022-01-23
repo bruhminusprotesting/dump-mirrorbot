@@ -140,7 +140,7 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('release', release)],
         states={
-            GENDER: [MessageHandler(gender)],
+            GENDER: [MessageHandler(Filters.text, gender)],
             PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
             LOCATION: [
                 MessageHandler(Filters.location, location),

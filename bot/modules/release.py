@@ -36,7 +36,7 @@ def release(update: Update, context: CallbackContext) -> int:
     #            "This is a temp restricted command."
     #            " You do not have permissions to run this.")
     #    stop()
-    if not user.id in AUTHORIZED_CHATS: or user.id in SUDO_USERS:
+    if not user.id in AUTHORIZED_CHATS or user.id in SUDO_USERS:
             update.message.reply_text(
                 "This is a temp restricted command."
                 " You do not have permissions to run this.")

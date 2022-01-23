@@ -48,6 +48,9 @@ def release(update: Update, context: CallbackContext) -> int:
 
 def gender(update: Update, context: CallbackContext) -> int:
     """Stores the selected gender and asks for a photo."""
+    global DEVICE_CODENAME
+    DEVICE_CODENAME = update.message.from_user
+    print(DEVICE_CODENAME)
     user = update.message.from_user
     logger.info("Gender of %s: %s", user.first_name, update.message.text)
     update.message.reply_text(
@@ -62,6 +65,8 @@ def gender(update: Update, context: CallbackContext) -> int:
 def photo(update: Update, context: CallbackContext) -> int:
     """Stores the photo and asks for a location."""
     user = update.message.from_user
+    print("Hello")
+    print(DEVICE_CODENAME)
     photo_file = update.message.photo[-1].get_file()
     photo_file.download('user_photo.jpg')
     logger.info("Photo of %s: %s", user.first_name, 'user_photo.jpg')

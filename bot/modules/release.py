@@ -30,7 +30,7 @@ def release(update: Update, context: CallbackContext) -> int:
     """Starts the conversation and asks the user about their gender."""
     user = update.message.from_user
     if user.id in AUTHORIZED_CHATS:
-        print(CHAT_ID)
+        print(user.id)
     else:
         update.message.reply_text(
                 "This is a temp restricted command."

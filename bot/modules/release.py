@@ -24,7 +24,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-GENDER, PHOTO, LOCATION, BIO = range(4)
+DEVICE_CODENAME, DEVICE_NAME, OTA_STATUS, DOWNLOAD_LINK, ANDROID_VERSION, BUGS, TELEGRAPH_FLASH_STEPS_LINK, ARE_THERE_GAPPS, RECOVERY_DOWNLOAD_LINK, FIRMWARE_DOWNLOAD_LINK, BUILD_CHANGELOG, USER_NOTES, ARE_VALUES_CORRECT, PHOTO, LOCATION, BIO = range(16)
 
 def release(update: Update, context: CallbackContext) -> int:
     """Starts the conversation and asks the user about their gender."""

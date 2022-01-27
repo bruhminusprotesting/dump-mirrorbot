@@ -67,7 +67,7 @@ def device_name(update: Update, context: CallbackContext) -> int:
     global DEVICE_NAME
     DEVICE_NAME = update.message.text
     user = update.message.from_user
-    update.message.reply_text('Send Your Device Name(example: Realme C1):')
+    update.message.reply_text('Do You Want To Send an OTA Update To Users For This Build? (y/n).')
     return OTA_STATUS
 
 def ota_status(update: Update, context: CallbackContext) -> int:
@@ -75,7 +75,7 @@ def ota_status(update: Update, context: CallbackContext) -> int:
     global OTA_STATUS
     OTA_STATUS = update.message.text
     user = update.message.from_user
-    update.message.reply_text('Do You Want To Send an OTA Update To Users For This Build? (y/n).')
+    update.message.reply_text('Provide A Direct Download Link To Your Build.')
     return DOWNLOAD_LINK
 
 def download_link(update: Update, context: CallbackContext) -> int:

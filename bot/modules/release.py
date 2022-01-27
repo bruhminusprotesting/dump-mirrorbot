@@ -214,6 +214,7 @@ def main() -> None:
             ARE_VALUES_CORRECT: [MessageHandler(Filters.text, are_values_correct)],
         },
         fallbacks=[CommandHandler('stop', stop)],
+        allow_reentry=True
     )
 
     dispatcher.add_handler(conv_handler)

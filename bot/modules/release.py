@@ -179,58 +179,6 @@ def skip_user_notes(update: Update, context: CallbackContext) -> int:
     update.message.reply_text('Are The Above Values Correct? If Yes, Type "Y". Else Click /stop to start over again.')
     return ARE_VALUES_CORRECT
 
-def photo(update: Update, context: CallbackContext) -> int:
-    """Stores the photo and asks for a location."""
-    user = update.message.from_user
-    print("Hello")
-    print(DEVICE_CODENAME)
-    print("Should work")
-    photo_file = update.message.photo[-1].get_file()
-    photo_file.download('user_photo.jpg')
-    logger.info("Photo of %s: %s", user.first_name, 'user_photo.jpg')
-    update.message.reply_text(
-        'Gorgeous! Now, send me your location please, or send /skip if you don\'t want to.'
-    )
-
-    return LOCATION
-
-
-def skip_photo(update: Update, context: CallbackContext) -> int:
-    """Skips the photo and asks for a location."""
-    user = update.message.from_user
-    logger.info("User %s did not send a photo.", user.first_name)
-    update.message.reply_text(
-        'I bet you look great! Now, send me your location please, or send /skip.'
-    )
-
-    return LOCATION
-
-
-def location(update: Update, context: CallbackContext) -> int:
-    """Stores the location and asks for some info about the user."""
-    user = update.message.from_user
-    user_location = update.message.location
-    logger.info(
-        "Location of %s: %f / %f", user.first_name, user_location.latitude, user_location.longitude
-    )
-    update.message.reply_text(
-        'Maybe I can visit you sometime! At last, tell me something about yourself.'
-    )
-
-    return BIO
-
-
-def skip_location(update: Update, context: CallbackContext) -> int:
-    """Skips the location and asks for info about the user."""
-    user = update.message.from_user
-    logger.info("User %s did not send a location.", user.first_name)
-    update.message.reply_text(
-        'You seem a bit paranoid! At last, tell me something about yourself.'
-    )
-
-    return BIO
-
-
 def bio(update: Update, context: CallbackContext) -> int:
     """Stores the info about the user and ends the conversation."""
     user = update.message.from_user
@@ -273,12 +221,6 @@ def main() -> None:
             BUILD_CHANGELOG: [MessageHandler(Filters.text, build_changelog)],
             USER_NOTES: [MessageHandler(Filters.text, user_notes), CommandHandler('skip', skip_user_notes)],
             ARE_VALUES_CORRECT: [MessageHandler(Filters.text, are_values_correct)],
-            PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
-            LOCATION: [
-                MessageHandler(Filters.location, location),
-                CommandHandler('skip', skip_location),
-            ],
-            BIO: [MessageHandler(Filters.text & ~Filters.command, bio)],
         },
         fallbacks=[CommandHandler('stop', stop)],
     )

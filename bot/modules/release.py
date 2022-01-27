@@ -179,15 +179,6 @@ def skip_user_notes(update: Update, context: CallbackContext) -> int:
     update.message.reply_text('Are The Above Values Correct? If Yes, Type "Y". Else Click /stop to start over again.')
     return ARE_VALUES_CORRECT
 
-def bio(update: Update, context: CallbackContext) -> int:
-    """Stores the info about the user and ends the conversation."""
-    user = update.message.from_user
-    logger.info("Bio of %s: %s", user.first_name, update.message.text)
-    update.message.reply_text('Thank you! I hope we can talk again some day.')
-
-    return ConversationHandler.END
-
-
 def stop(update: Update, context: CallbackContext) -> int:
     """Stops and ends the conversation."""
     user = update.message.from_user

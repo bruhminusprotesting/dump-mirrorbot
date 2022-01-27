@@ -48,10 +48,10 @@ def release(update: Update, context: CallbackContext) -> int:
         "Enter Your Device Codename."
         "Use /stop to exit."
     )
-    return DEVICE_NAME
+    return DEVICE_CODENAME
+    #return DEVICE_NAME
 
-
-def device_name(update: Update, context: CallbackContext) -> int:
+def device_codename(update: Update, context: CallbackContext) -> int:
     """Stores the device_codename and asks for device_name."""
     global DEVICE_CODENAME
     DEVICE_CODENAME = update.message.text
@@ -60,12 +60,20 @@ def device_name(update: Update, context: CallbackContext) -> int:
         'Send Your Device Name(example: Realme C1):',
         reply_markup=ReplyKeyboardRemove(),
     )
+    return DEVICE_NAME
+
+def device_name(update: Update, context: CallbackContext) -> int:
+    """Stores the device_name and asks for OTA Status."""
+    global DEVICE_NAME
+    DEVICE_NAME = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('Send Your Device Name(example: Realme C1):')
     return OTA_STATUS
 
 def ota_status(update: Update, context: CallbackContext) -> int:
     """Stores Device Name And Asks For OTA Status."""
-    global DEVICE_NAME
-    DEVICE_NAME = update.message.text
+    global OTA_STATUS
+    OTA_STATUS = update.message.text
     user = update.message.from_user
     update.message.reply_text('Do You Want To Send an OTA Update To Users For This Build? (y/n).')
     return DOWNLOAD_LINK
@@ -139,7 +147,9 @@ def are_values_correct(update: Update, context: CallbackContext) -> int:
     ARE_VALUES_CORRECT = update.message.text
     user = update.message.from_user
     update.message.reply_text('Processing Your Build.')
-    process_build()
+    print('hello, this is a conformation test')
+    return ConversationHandler.END
+    #process_build()
 
 def skip_bugs(update: Update, context: CallbackContext) -> int:
     global BUGS
@@ -253,6 +263,7 @@ def main() -> None:
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('release', release)],
         states={
+            DEVICE_CODENAME: [MessageHandler(Filters.text, device_codename)],
             DEVICE_NAME: [MessageHandler(Filters.text, device_name)],
             OTA_STATUS: [MessageHandler(Filters.text, ota_status)],
             DOWNLOAD_LINK: [MessageHandler(Filters.text, download_link)],

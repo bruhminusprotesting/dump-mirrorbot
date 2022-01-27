@@ -275,7 +275,7 @@ def main() -> None:
             FIRMWARE_DOWNLOAD_LINK: [MessageHandler(Filters.text, firmware_download_link), CommandHandler('skip', skip_firmware_download_link)],
             BUILD_CHANGELOG: [MessageHandler(Filters.text, build_changelog)],
             USER_NOTES: [MessageHandler(Filters.text, user_notes), CommandHandler('skip', skip_user_notes)],
-            ARE_VALUES_CORRECT: [MessageHandler(Filters.text, DEVICE_NAME)],
+            ARE_VALUES_CORRECT: [MessageHandler(Filters.text, are_values_correct)],
             PHOTO: [MessageHandler(Filters.photo, photo), CommandHandler('skip', skip_photo)],
             LOCATION: [
                 MessageHandler(Filters.location, location),

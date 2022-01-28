@@ -113,8 +113,12 @@ def recovery_download_link(update: Update, context: CallbackContext) -> int:
     global NEW_RECOVERY_DOWNLOAD_LINK
     NEW_RECOVERY_DOWNLOAD_LINK = update.message.text
     user = update.message.from_user
-    update.message.reply_text('Send the firmware link if its needed ( /skip to skip).')
-    return FIRMWARE_DOWNLOAD_LINK
+    if 'http' in NEW_RECOVERY_DOWNLOAD_LINK:
+        update.message.reply_text('Send the firmware link if its needed ( /skip to skip).')
+        return FIRMWARE_DOWNLOAD_LINK
+    else:
+        update.message.reply_text('Recovery Link Is Invalid. Submit a proper link!')
+        return RECOVERY_DOWNLOAD_LINK
 
 def firmware_download_link(update: Update, context: CallbackContext) -> str:
     global NEW_FIRMWARE_DOWNLOAD_LINK

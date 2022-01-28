@@ -126,6 +126,7 @@ def firmware_download_link(update: Update, context: CallbackContext) -> str:
 def build_changelog(update: Update, context: CallbackContext) -> str:
     global NEW_BUILD_CHANGELOG
     NEW_BUILD_CHANGELOG = update.message.text
+    print(NEW_BUILD_CHANGELOG)
     user = update.message.from_user
     update.message.reply_text('Are there any Notes you\'d like to leave for users? (Enter /skip to skip notes).')
     return USER_NOTES

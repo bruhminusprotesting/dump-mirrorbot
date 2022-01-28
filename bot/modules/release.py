@@ -52,7 +52,7 @@ def release(update: Update, context: CallbackContext) -> str:
 def device_codename(update: Update, context: CallbackContext) -> str:
     """Stores the device_codename and asks for device_name."""
     global NEW_DEVICE_CODENAME
-    NEW_DEVICE_CODENAME = update.message.text
+    NEW_DEVICE_CODENAME = update.message.text.lower()
     user = update.message.from_user
     update.message.reply_text('Send Your Device Name(example: Realme C1):')
     return DEVICE_NAME
@@ -68,12 +68,21 @@ def device_name(update: Update, context: CallbackContext) -> str:
 def ota_status(update: Update, context: CallbackContext) -> str:
     """Stores Device Name And Asks For OTA Status."""
     global NEW_OTA_STATUS
-    NEW_OTA_STATUS = update.message.text
+    NEW_OTA_STATUS = update.message.text.lower()
     user = update.message.from_user
+    if 'y' in NEW_OTA_STATUS:
+        NEW_OTA_STATUS='y'
+        update.message.reply_text('OTA Disabled For this build.')
+    elif 'n' in NEW_OTA_STATUS:
+        NEW_OTA_STATUS='y'
+        update.message.reply_text('OTA Disabled For this build.')
+    else:
+        update.message.reply_text('Invalid Input. Enter Either \'y\' or \'n\'')
+        return OTA_STATUS
     update.message.reply_text('Provide A Direct Download Link To Your Build.')
     return DOWNLOAD_LINK
 
-def download_link(update: Update, context: CallbackContext) -> str:
+def download_link(update: Update, context: CallbackContext) -> int:
     """Stores OTA Info and asks for download link."""
     global NEW_DOWNLOAD_LINK
     NEW_DOWNLOAD_LINK = update.message.text
@@ -85,8 +94,12 @@ def android_version(update: Update, context: CallbackContext) -> str:
     global NEW_ANDROID_VERSION
     NEW_ANDROID_VERSION = update.message.text
     user = update.message.from_user
-    update.message.reply_text('Are there any bugs you\'d like to inform your users about?( /skip to skip).')
-    return BUGS
+    if isinstance(NEW_ANDROID_VERSION, type(int)):
+        update.message.reply_text('Are there any bugs you\'d like to inform your users about?( /skip to skip).')
+        return BUGS
+    else:
+        update.message.reply_text('You havent entered an integer value, you had one task to do!')
+        return NEW_ANDROID_VERSION
 
 def bugs(update: Update, context: CallbackContext) -> str:
     global NEW_BUGS
@@ -99,15 +112,24 @@ def telegraph_flash_steps_link(update: Update, context: CallbackContext) -> str:
     global NEW_TELEGRAPH_FLASH_STEPS_LINK
     NEW_TELEGRAPH_FLASH_STEPS_LINK = update.message.text
     user = update.message.from_user
-    update.message.reply_text('Send the Preferred gapps link ( press /skip only if your build ships with gapps).')
-    return ARE_THERE_GAPPS
+    if 'telegra.ph' in NEW_TELEGRAPH_FLASH_STEPS_LINK:
+        update.message.reply_text('Send the Preferred gapps link ( press /skip only if your build ships with gapps).')
+        return ARE_THERE_GAPPS
+    else:
+        update.message.reply_text('Telegra.ph Link is Invalid. Submit a proper link!')
+        return TELEGRAPH_FLASH_STEPS_LINK
 
 def are_there_gapps(update: Update, context: CallbackContext) -> str:
-    global NEW_ARE_THERE_GAPPS
+    global NEW_ARE_THERE_GAPPS, NEW_BUILD_TYPE
     NEW_ARE_THERE_GAPPS = update.message.text
     user = update.message.from_user
-    update.message.reply_text('Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
-    return RECOVERY_DOWNLOAD_LINK
+    if 'http' in NEW_ARE_THERE_GAPPS:
+        update.message.reply_text('Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
+        NEW_BUILD_TYPE='vanilla'
+        return RECOVERY_DOWNLOAD_LINK
+    else:
+        update.message.reply_text('Gapps Link Is Invalid. Submit a proper link!.')
+        return ARE_THERE_GAPPS
 
 def recovery_download_link(update: Update, context: CallbackContext) -> int:
     global NEW_RECOVERY_DOWNLOAD_LINK
@@ -124,8 +146,12 @@ def firmware_download_link(update: Update, context: CallbackContext) -> str:
     global NEW_FIRMWARE_DOWNLOAD_LINK
     NEW_FIRMWARE_DOWNLOAD_LINK = update.message.text
     user = update.message.from_user
-    update.message.reply_text('Enter Changelog For Your Build.')
-    return BUILD_CHANGELOG
+    if 'http' in NEW_FIRMWARE_DOWNLOAD_LINK:
+        update.message.reply_text('Enter Changelog For Your Build.')
+        return BUILD_CHANGELOG
+    else:
+        update.message.reply_text('Firmware Link Is Invalid. Provide a proper firmware link!')
+        return FIRMWARE_DOWNLOAD_LINK
 
 def build_changelog(update: Update, context: CallbackContext) -> str:
     global NEW_BUILD_CHANGELOG
@@ -159,8 +185,9 @@ def skip_bugs(update: Update, context: CallbackContext) -> str:
     return TELEGRAPH_FLASH_STEPS_LINK
 
 def skip_are_there_gapps(update: Update, context: CallbackContext) -> str:
-    global NEW_ARE_THERE_GAPPS
+    global NEW_ARE_THERE_GAPPS, NEW_BUILD_TYPE
     NEW_ARE_THERE_GAPPS = 'skipped'
+    NEW_BUILD_TYPE='gapps'
     user = update.message.from_user
     update.message.reply_text('Skipped GApps. Now Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
     return RECOVERY_DOWNLOAD_LINK

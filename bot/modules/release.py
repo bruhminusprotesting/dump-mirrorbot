@@ -36,11 +36,11 @@ def release(update: Update, context: CallbackContext) -> str:
     #            "This is a temp restricted command."
     #            " You do not have permissions to run this.")
     #    stop()
-    #if not user.id in AUTHORIZED_CHATS or not user.id in SUDO_USERS:
-            #update.message.reply_text(
-            #    "This is a temp restricted command."
-            #    " You do not have permissions to run this.")
-            #stop()
+    if not user.id in AUTHORIZED_CHATS:
+            update.message.reply_text(
+                "This is a temp restricted command."
+                " You do not have permissions to run this.")
+            stop()
 
     update.message.reply_text(
         "Enter Your Device Codename."

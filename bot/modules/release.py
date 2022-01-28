@@ -24,7 +24,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# DEVICE_CODENAME, DEVICE_NAME, OTA_STATUS, DOWNLOAD_LINK, ANDROID_VERSION, BUGS, TELEGRAPH_FLASH_STEPS_LINK, ARE_THERE_GAPPS, RECOVERY_DOWNLOAD_LINK, FIRMWARE_DOWNLOAD_LINK, BUILD_CHANGELOG, USER_NOTES, ARE_VALUES_CORRECT, PHOTO, LOCATION, BIO = range(16)
+DEVICE_CODENAME, DEVICE_NAME, OTA_STATUS, DOWNLOAD_LINK, ANDROID_VERSION, BUGS, TELEGRAPH_FLASH_STEPS_LINK, ARE_THERE_GAPPS, RECOVERY_DOWNLOAD_LINK, FIRMWARE_DOWNLOAD_LINK, BUILD_CHANGELOG, USER_NOTES, ARE_VALUES_CORRECT, PHOTO, LOCATION, BIO = range(16)
 
 def release(update: Update, context: CallbackContext) -> str:
     """Starts the conversation and asks the user about their gender."""
@@ -51,95 +51,95 @@ def release(update: Update, context: CallbackContext) -> str:
 
 def device_codename(update: Update, context: CallbackContext) -> str:
     """Stores the device_codename and asks for device_name."""
-    global DEVICE_CODENAME
-    DEVICE_CODENAME = update.message.text
+    global NEW_DEVICE_CODENAME
+    NEW_DEVICE_CODENAME = update.message.text
     user = update.message.from_user
     update.message.reply_text('Send Your Device Name(example: Realme C1):')
     return DEVICE_NAME
 
 def device_name(update: Update, context: CallbackContext) -> str:
     """Stores the device_name and asks for OTA Status."""
-    global DEVICE_NAME
-    DEVICE_NAME = update.message.text
+    global NEW_DEVICE_NAME
+    NEW_DEVICE_NAME = update.message.text
     user = update.message.from_user
     update.message.reply_text('Do You Want To Send an OTA Update To Users For This Build? (y/n).')
     return OTA_STATUS
 
 def ota_status(update: Update, context: CallbackContext) -> str:
     """Stores Device Name And Asks For OTA Status."""
-    global OTA_STATUS
-    OTA_STATUS = update.message.text
+    global NEW_OTA_STATUS
+    NEW_OTA_STATUS = update.message.text
     user = update.message.from_user
     update.message.reply_text('Provide A Direct Download Link To Your Build.')
     return DOWNLOAD_LINK
 
 def download_link(update: Update, context: CallbackContext) -> str:
     """Stores OTA Info and asks for download link."""
-    global DOWNLOAD_LINK
-    DOWNLOAD_LINK = update.message.text
+    global NEW_DOWNLOAD_LINK
+    NEW_DOWNLOAD_LINK = update.message.text
     user = update.message.from_user
     update.message.reply_text('What\'s the android version?(integer values only).')
     return ANDROID_VERSION
 
 def android_version(update: Update, context: CallbackContext) -> str:
-    global ANDROID_VERSION
-    ANDROID_VERSION = update.message.text
+    global NEW_ANDROID_VERSION
+    NEW_ANDROID_VERSION = update.message.text
     user = update.message.from_user
     update.message.reply_text('Are there any bugs you\'d like to inform your users about?( /skip to skip).')
     return BUGS
 
 def bugs(update: Update, context: CallbackContext) -> str:
-    global BUGS
-    BUGS = update.message.text
+    global NEW_BUGS
+    NEW_BUGS = update.message.text
     user = update.message.from_user
     update.message.reply_text('Send the flash steps needed in the form of a telegra.ph link.')
     return TELEGRAPH_FLASH_STEPS_LINK
 
 def telegraph_flash_steps_link(update: Update, context: CallbackContext) -> str:
-    global TELEGRAPH_FLASH_STEPS_LINK
-    TELEGRAPH_FLASH_STEPS_LINK = update.message.text
+    global NEW_TELEGRAPH_FLASH_STEPS_LINK
+    NEW_TELEGRAPH_FLASH_STEPS_LINK = update.message.text
     user = update.message.from_user
     update.message.reply_text('Send the Preferred gapps link ( press /skip only if your build ships with gapps).')
     return ARE_THERE_GAPPS
 
 def are_there_gapps(update: Update, context: CallbackContext) -> str:
-    global ARE_THERE_GAPPS
-    ARE_THERE_GAPPS = update.message.text
+    global NEW_ARE_THERE_GAPPS
+    NEW_ARE_THERE_GAPPS = update.message.text
     user = update.message.from_user
     update.message.reply_text('Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
     return RECOVERY_DOWNLOAD_LINK
 
 def recovery_download_link(update: Update, context: CallbackContext) -> int:
-    global RECOVERY_DOWNLOAD_LINK
-    RECOVERY_DOWNLOAD_LINK = update.message.text
+    global NEW_RECOVERY_DOWNLOAD_LINK
+    NEW_RECOVERY_DOWNLOAD_LINK = update.message.text
     user = update.message.from_user
     update.message.reply_text('Send the firmware link if its needed ( /skip to skip).')
     return FIRMWARE_DOWNLOAD_LINK
 
 def firmware_download_link(update: Update, context: CallbackContext) -> str:
-    global FIRMWARE_DOWNLOAD_LINK
-    FIRMWARE_DOWNLOAD_LINK = update.message.text
+    global NEW_FIRMWARE_DOWNLOAD_LINK
+    NEW_FIRMWARE_DOWNLOAD_LINK = update.message.text
     user = update.message.from_user
     update.message.reply_text('Enter Changelog For Your Build.')
     return BUILD_CHANGELOG
 
 def build_changelog(update: Update, context: CallbackContext) -> str:
-    global BUILD_CHANGELOG
-    BUILD_CHANGELOG = update.message.text
+    global NEW_BUILD_CHANGELOG
+    NEW_BUILD_CHANGELOG = update.message.text
     user = update.message.from_user
     update.message.reply_text('Are there any Notes you\'d like to leave for users? (Enter /skip to skip notes).')
     return USER_NOTES
 
 def user_notes(update: Update, context: CallbackContext) -> str:
-    global USER_NOTES
-    USER_NOTES = update.message.text
+    global NEW_USER_NOTES
+    NEW_USER_NOTES = update.message.text
     user = update.message.from_user
     update.message.reply_text('Are The Above Values Correct? If Yes, Type "Y". Else Click /stop to start over again.')
     return ARE_VALUES_CORRECT
 
 def are_values_correct(update: Update, context: CallbackContext) -> str:
-    global ARE_VALUES_CORRECT
-    ARE_VALUES_CORRECT = update.message.text
+    global NEW_ARE_VALUES_CORRECT
+    NEW_ARE_VALUES_CORRECT = update.message.text
     user = update.message.from_user
     update.message.reply_text('Processing Your Build.')
     print('hello, this is a conformation test, implying that Your release has worked, this will show up in heroku logs')
@@ -147,29 +147,29 @@ def are_values_correct(update: Update, context: CallbackContext) -> str:
     #process_build()
 
 def skip_bugs(update: Update, context: CallbackContext) -> str:
-    global BUGS
-    BUGS = 'skipped'
+    global NEW_BUGS
+    NEW_BUGS = 'skipped'
     user = update.message.from_user
     update.message.reply_text('Skipping bugs. Now Send the flash steps needed in the form of a telegra.ph link.')
     return TELEGRAPH_FLASH_STEPS_LINK
 
 def skip_are_there_gapps(update: Update, context: CallbackContext) -> str:
-    global ARE_THERE_GAPPS
-    ARE_THERE_GAPPS = 'skipped'
+    global NEW_ARE_THERE_GAPPS
+    NEW_ARE_THERE_GAPPS = 'skipped'
     user = update.message.from_user
     update.message.reply_text('Skipped GApps. Now Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
     return RECOVERY_DOWNLOAD_LINK
 
 def skip_firmware_download_link(update: Update, context: CallbackContext) -> str:
-    global FIRMWARE_DOWNLOAD_LINK
-    FIRMWARE_DOWNLOAD_LINK = 'skipped'
+    global NEW_FIRMWARE_DOWNLOAD_LINK
+    NEW_FIRMWARE_DOWNLOAD_LINK = 'skipped'
     user = update.message.from_user
     update.message.reply_text('Skipped Firmware Download Link. Now Enter Changelog For Your Build.')
     return BUILD_CHANGELOG
 
 def skip_user_notes(update: Update, context: CallbackContext) -> str:
-    global USER_NOTES
-    USER_NOTES = 'skipped'
+    global NEW_USER_NOTES
+    NEW_USER_NOTES = 'skipped'
     user = update.message.from_user
     update.message.reply_text('Are The Above Values Correct? If Yes, Type "Y". Else Click /stop to start over again.')
     return ARE_VALUES_CORRECT

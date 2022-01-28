@@ -181,7 +181,7 @@ def stop(update: Update, context: CallbackContext) -> str:
     update.message.reply_text('Bye! I hope we can talk again some day.')
     return ConversationHandler.END
 
-def main() -> None:
+def main() -> str:
     """Run the bot."""
     
     # Create the Updater and pass it your bot's token.

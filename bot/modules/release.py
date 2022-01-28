@@ -36,13 +36,11 @@ def release(update: Update, context: CallbackContext) -> int:
     #            "This is a temp restricted command."
     #            " You do not have permissions to run this.")
     #    stop()
-    if not user.id in AUTHORIZED_CHATS or not user.id in SUDO_USERS:
-            update.message.reply_text(
-                "This is a temp restricted command."
-                " You do not have permissions to run this.")
+    #if not user.id in AUTHORIZED_CHATS or not user.id in SUDO_USERS:
+            #update.message.reply_text(
+            #    "This is a temp restricted command."
+            #    " You do not have permissions to run this.")
             #stop()
-        
-    reply_keyboard = [['Boy', 'Girl', 'Other']]
 
     update.message.reply_text(
         "Enter Your Device Codename."
@@ -56,10 +54,7 @@ def device_codename(update: Update, context: CallbackContext) -> int:
     global DEVICE_CODENAME
     DEVICE_CODENAME = update.message.text
     user = update.message.from_user
-    update.message.reply_text(
-        'Send Your Device Name(example: Realme C1):',
-        reply_markup=ReplyKeyboardRemove(),
-    )
+    update.message.reply_text('Send Your Device Name(example: Realme C1):')
     return DEVICE_NAME
 
 def device_name(update: Update, context: CallbackContext) -> int:

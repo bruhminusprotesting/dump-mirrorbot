@@ -104,6 +104,7 @@ def android_version(update: Update, context: CallbackContext) -> str:
     except ValueError:
         # Handle the exception
         update.message.reply_text('You havent entered an integer value, you had one task to do!')
+        return ANDROID_VERSION
 
 def bugs(update: Update, context: CallbackContext) -> str:
     global NEW_BUGS

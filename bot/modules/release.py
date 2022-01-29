@@ -185,6 +185,12 @@ def are_values_correct(update: Update, context: CallbackContext) -> str:
     global NEW_ARE_VALUES_CORRECT
     NEW_ARE_VALUES_CORRECT = update.message.text.lower()
     user = update.message.from_user
+    CHAT_ID=user.chat_id
+    USER_ID = f"{user.from_user.id}"
+    FIRST_NAME = f"{user.from_user.first_name}"
+    print(CHAT_ID)
+    print(USER_ID)
+    print(FIRST_NAME)
     if 'y' in NEW_ARE_VALUES_CORRECT:
         update.message.reply_text('Processing Your Build.')
         NEW_ARE_VALUES_CORRECT='y'

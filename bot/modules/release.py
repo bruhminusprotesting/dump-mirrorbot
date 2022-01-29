@@ -182,16 +182,12 @@ def user_notes(update: Update, context: CallbackContext) -> str:
     return ARE_VALUES_CORRECT
 
 def are_values_correct(update: Update, context: CallbackContext) -> str:
-    global NEW_ARE_VALUES_CORRECT
+    global NEW_ARE_VALUES_CORRECT, CHAT_ID, USER_ID, FIRST_NAME
     NEW_ARE_VALUES_CORRECT = update.message.text.lower()
     user=update.message.from_user
-    #CHAT_ID=user.chat_id
     CHAT_ID=update.effective_chat.id
     USER_ID=user.id
     FIRST_NAME=user.first_name
-    print(CHAT_ID)
-    print(USER_ID)
-    print(FIRST_NAME)
     if 'y' in NEW_ARE_VALUES_CORRECT:
         update.message.reply_text('Processing Your Build.')
         NEW_ARE_VALUES_CORRECT='y'

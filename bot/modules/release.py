@@ -186,7 +186,7 @@ def are_values_correct(update: Update, context: CallbackContext) -> str:
     NEW_ARE_VALUES_CORRECT = update.message.text.lower()
     user=update.message.from_user
     #CHAT_ID=user.chat_id
-    CHAT_ID=update.message.from_user.chat_id
+    CHAT_ID=update.effective_chat.id
     USER_ID=user.id
     FIRST_NAME=user.first_name
     print(CHAT_ID)

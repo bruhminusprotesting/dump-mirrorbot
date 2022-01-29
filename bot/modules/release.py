@@ -224,7 +224,7 @@ def stop(update: Update, context: CallbackContext) -> str:
     """Stops and ends the conversation."""
     user = update.message.from_user
     logger.info("User %s stopped the conversation.", user.first_name)
-    update.message.reply_text('Bye! I hope we can talk again some day.')
+    update.message.reply_text('Build Upload Process Cancelled.')
     return ConversationHandler.END
 
 def main() -> str:

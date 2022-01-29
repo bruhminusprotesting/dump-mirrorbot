@@ -100,11 +100,11 @@ def android_version(update: Update, context: CallbackContext) -> str:
     user = update.message.from_user
     try:
         NEW_ANDROID_VERSION = int(NEW_ANDROID_VERSION)
-        return BUGS
     except ValueError:
         # Handle the exception
         update.message.reply_text('You havent entered an integer value, you had one task to do!')
         return ANDROID_VERSION
+    return BUGS
 
 def bugs(update: Update, context: CallbackContext) -> str:
     global NEW_BUGS

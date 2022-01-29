@@ -99,7 +99,7 @@ def android_version(update: Update, context: CallbackContext) -> str:
     user = update.message.from_user
     try:
         NEW_ANDROID_VERSION = int(NEW_ANDROID_VERSION)
-        update.message.reply_text('Are there any bugs you\'d like to inform your users?')
+        update.message.reply_text('Are there any bugs you\'d like to inform your users? (/skip to skip)')
         return BUGS
     except ValueError:
         # Handle the exception

@@ -24,7 +24,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-DEVICE_CODENAME, DEVICE_NAME, OTA_STATUS, DOWNLOAD_LINK, ANDROID_VERSION, BUGS, TELEGRAPH_FLASH_STEPS_LINK, ARE_THERE_GAPPS, RECOVERY_DOWNLOAD_LINK, FIRMWARE_DOWNLOAD_LINK, BUILD_CHANGELOG, USER_NOTES, ARE_VALUES_CORRECT, PHOTO, LOCATION, BIO = range(16)
+DEVICE_CODENAME, DEVICE_NAME, OTA_STATUS, DOWNLOAD_LINK, ANDROID_VERSION, BUGS, TELEGRAPH_FLASH_STEPS_LINK, ARE_THERE_GAPPS, RECOVERY_DOWNLOAD_LINK, FIRMWARE_DOWNLOAD_LINK, BUILD_CHANGELOG, USER_NOTES, ARE_VALUES_CORRECT, ZIP_NAME, LOCATION, BIO = range(16)
 
 def release(update: Update, context: CallbackContext) -> str:
     """Starts the conversation and asks the user about their gender."""
@@ -87,11 +87,18 @@ def download_link(update: Update, context: CallbackContext) -> int:
     NEW_DOWNLOAD_LINK = update.message.text
     user = update.message.from_user
     if 'http' in NEW_DOWNLOAD_LINK:
-        update.message.reply_text('What\'s the android version?(integer values only).')
-        return ANDROID_VERSION
+        update.message.reply_text('Provide The Full zip Name of your build.')
+        return ZIP_NAME
     else:
         update.message.reply_text('Invalid Download Link. Submit A Proper Download Link!')
         return DOWNLOAD_LINK
+
+def zip_name(update: Update, context: CallbackContext) -> str:
+    global NEW_ZIP_NAME
+    NEW_ZIP_NAME = update.message.text
+    user = update.message.from_user
+    update.message.reply_text('What\'s the android version?(integer values only).')
+    return ANDROID_VERSION
 
 def android_version(update: Update, context: CallbackContext) -> str:
     global NEW_ANDROID_VERSION
@@ -103,7 +110,7 @@ def android_version(update: Update, context: CallbackContext) -> str:
         return BUGS
     except ValueError:
         # Handle the exception
-        update.message.reply_text('You havent entered an integer value, you had one task to do!')
+        update.message.reply_text('You haven\'t entered an integer value, you had one task to do!')
         return ANDROID_VERSION
 
 def bugs(update: Update, context: CallbackContext) -> str:
@@ -244,6 +251,7 @@ def main() -> str:
             DEVICE_NAME: [MessageHandler(Filters.text & ~Filters.command, device_name)],
             OTA_STATUS: [MessageHandler(Filters.text & ~Filters.command, ota_status)],
             DOWNLOAD_LINK: [MessageHandler(Filters.text & ~Filters.command, download_link)],
+            ZIP_NAME: [MessageHandler(Filters.text & ~Filters.command, zip_name)],
             ANDROID_VERSION: [MessageHandler(Filters.text & ~Filters.command, android_version)],
             BUGS: [MessageHandler(Filters.text & ~Filters.command, bugs), CommandHandler('skip', skip_bugs)],
             TELEGRAPH_FLASH_STEPS_LINK: [MessageHandler(Filters.text & ~Filters.command, telegraph_flash_steps_link)],

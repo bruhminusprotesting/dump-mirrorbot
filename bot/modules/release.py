@@ -98,10 +98,10 @@ def android_version(update: Update, context: CallbackContext) -> str:
     global NEW_ANDROID_VERSION
     NEW_ANDROID_VERSION = update.message.text
     user = update.message.from_user
-     try:
+    try:
         NEW_ANDROID_VERSION = int(NEW_ANDROID_VERSION)
         return BUGS
-     except ValueError:
+    except ValueError:
         # Handle the exception
         update.message.reply_text('You havent entered an integer value, you had one task to do!')
 
@@ -183,7 +183,10 @@ def are_values_correct(update: Update, context: CallbackContext) -> str:
         #process_build()
     elif 'n' in NEW_ARE_VALUES_CORRECT:
         update.message.reply_text('Aborted Processing of Build!.')
-        NEW_ARE_VALUES_CORRECT='n'     
+        NEW_ARE_VALUES_CORRECT='n'
+    else:
+        update.message.reply_text('Invalid Input Detected. Please enter \'y\' or \'n\'')
+        return ARE_VALUES_CORRECT
     return ConversationHandler.END
 
 def skip_bugs(update: Update, context: CallbackContext) -> str:
@@ -212,7 +215,7 @@ def skip_user_notes(update: Update, context: CallbackContext) -> str:
     global NEW_USER_NOTES
     NEW_USER_NOTES = 'skipped'
     user = update.message.from_user
-    update.message.reply_text('Are The Above Values Correct? If Yes, Type "Y". Else Click /stop to start over again.')
+    update.message.reply_text('Skipped Notes. Are The Above Values Correct? If Yes, Type "Y". Else Click /stop to start over again.')
     return ARE_VALUES_CORRECT
 
 def stop(update: Update, context: CallbackContext) -> str:

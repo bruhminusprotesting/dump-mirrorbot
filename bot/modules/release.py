@@ -128,6 +128,7 @@ def are_there_gapps(update: Update, context: CallbackContext) -> str:
     NEW_ARE_THERE_GAPPS = update.message.text
     user = update.message.from_user
     if 'http' in NEW_ARE_THERE_GAPPS:
+        update.message.reply_text('Build-Type=vanilla.')
         update.message.reply_text('Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
         NEW_BUILD_TYPE='vanilla'
         return RECOVERY_DOWNLOAD_LINK
@@ -201,7 +202,7 @@ def skip_are_there_gapps(update: Update, context: CallbackContext) -> str:
     NEW_ARE_THERE_GAPPS = 'skipped'
     NEW_BUILD_TYPE='gapps'
     user = update.message.from_user
-    update.message.reply_text('Skipped GApps. Now Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
+    update.message.reply_text('Build-Type=gapps. Skipped GApps. Now Send the download Link of the recovery you\'d recommend your users to flash(Preferably anonfiles as files on anonfiles last a long time).')
     return RECOVERY_DOWNLOAD_LINK
 
 def skip_firmware_download_link(update: Update, context: CallbackContext) -> str:

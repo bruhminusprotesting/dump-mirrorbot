@@ -17,7 +17,7 @@ import subprocess
 import string
 import random
 import logging
-
+YOUR_ROMNAME='FusionOS'
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
 )
@@ -37,9 +37,8 @@ def release(update: Update, context: CallbackContext) -> str:
     #            " You do not have permissions to run this.")
     #    stop()
     if not user.id in AUTHORIZED_CHATS:
-            update.message.reply_text(
-                "This is a temp restricted command."
-                " You do not have permissions to run this.")
+            reply='This Command is only for ' + YOUR_ROMNAME + ' Maintainers. If you\'re a ' + YOUR_ROMNAME + ' Maintainer, Ask Core Members to Authorize You'
+            update.message.reply_text(reply)
             return
 
     update.message.reply_text(
@@ -72,9 +71,9 @@ def ota_status(update: Update, context: CallbackContext) -> str:
     user = update.message.from_user
     if 'y' in NEW_OTA_STATUS:
         NEW_OTA_STATUS='y'
-        update.message.reply_text('OTA Disabled For this build.')
+        update.message.reply_text('OTA Enabled For this build.')
     elif 'n' in NEW_OTA_STATUS:
-        NEW_OTA_STATUS='y'
+        NEW_OTA_STATUS='n'
         update.message.reply_text('OTA Disabled For this build.')
     else:
         update.message.reply_text('Invalid Input. Enter Either \'y\' or \'n\'')
@@ -100,11 +99,12 @@ def android_version(update: Update, context: CallbackContext) -> str:
     user = update.message.from_user
     try:
         NEW_ANDROID_VERSION = int(NEW_ANDROID_VERSION)
+        update.message.reply_text('Are there any bugs you\'d like to inform your users?')
+        return BUGS
     except ValueError:
         # Handle the exception
         update.message.reply_text('You havent entered an integer value, you had one task to do!')
         return ANDROID_VERSION
-    return BUGS
 
 def bugs(update: Update, context: CallbackContext) -> str:
     global NEW_BUGS

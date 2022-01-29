@@ -87,19 +87,23 @@ def download_link(update: Update, context: CallbackContext) -> int:
     global NEW_DOWNLOAD_LINK
     NEW_DOWNLOAD_LINK = update.message.text
     user = update.message.from_user
-    update.message.reply_text('What\'s the android version?(integer values only).')
-    return ANDROID_VERSION
+    if 'http' in NEW_DOWNLOAD_LINK:
+        update.message.reply_text('What\'s the android version?(integer values only).')
+        return ANDROID_VERSION
+    else:
+        update.message.reply_text('Invalid Download Link. Submit A Proper Download Link!')
+        return DOWNLOAD_LINK
 
 def android_version(update: Update, context: CallbackContext) -> str:
     global NEW_ANDROID_VERSION
     NEW_ANDROID_VERSION = update.message.text
     user = update.message.from_user
-    if isinstance(NEW_ANDROID_VERSION, type(int)):
-        update.message.reply_text('Are there any bugs you\'d like to inform your users about?( /skip to skip).')
+     try:
+        NEW_ANDROID_VERSION = int(NEW_ANDROID_VERSION)
         return BUGS
-    else:
+     except ValueError:
+        # Handle the exception
         update.message.reply_text('You havent entered an integer value, you had one task to do!')
-        return NEW_ANDROID_VERSION
 
 def bugs(update: Update, context: CallbackContext) -> str:
     global NEW_BUGS
@@ -170,12 +174,17 @@ def user_notes(update: Update, context: CallbackContext) -> str:
 
 def are_values_correct(update: Update, context: CallbackContext) -> str:
     global NEW_ARE_VALUES_CORRECT
-    NEW_ARE_VALUES_CORRECT = update.message.text
+    NEW_ARE_VALUES_CORRECT = update.message.text.lower()
     user = update.message.from_user
-    update.message.reply_text('Processing Your Build.')
-    print('hello, this is a conformation test, implying that Your release has worked, this will show up in heroku logs')
+    if 'y' in NEW_ARE_VALUES_CORRECT:
+        update.message.reply_text('Processing Your Build.')
+        NEW_ARE_VALUES_CORRECT='y'
+        print('hello, this is a conformation test, implying that Your release has worked, this will show up in heroku logs')
+        #process_build()
+    elif 'n' in NEW_ARE_VALUES_CORRECT:
+        update.message.reply_text('Aborted Processing of Build!.')
+        NEW_ARE_VALUES_CORRECT='n'     
     return ConversationHandler.END
-    #process_build()
 
 def skip_bugs(update: Update, context: CallbackContext) -> str:
     global NEW_BUGS
